@@ -28,7 +28,7 @@ public class Euler3 {
     /*
     
      */
-    private int solveEfficient(Long n) {
+    private int solveEfficient(long n) {
         // generate primes with the Sieve of Eratosthenes
 
         // It is sufficient to check up to limit = sqrt(n), because any factor X =>
@@ -57,9 +57,6 @@ public class Euler3 {
                 }
             }
         }
-        return -1;
+        throw new IllegalStateException();
     }
-    //TODO: Optimize the bitset (resize? only represent uneven numbers).
-    //TODO: Add Miller-Raban primability test.
-    //TODO: The big loop can terminate as soon as n/ i < last found prime
 }
