@@ -40,7 +40,7 @@ public class Euler2 {
      * number after another and checks for even´es. Its lightning fast, while taking
      * the minimal necessary space.
      */
-    private int solveEfficient(Integer n) {
+    public int solveEfficient(Integer n) {
         int sum = 0;
         int a = 1; // fib(0)
         int b = 1; // fib(1)
