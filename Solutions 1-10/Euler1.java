@@ -38,7 +38,7 @@ public class Euler1 {
 					(System.currentTimeMillis() - time), n);
 
 			time = System.currentTimeMillis();
-			euler.solveExtandable(n, divisors);
+			euler.solveExtendable(n, divisors);
 			System.out.printf("Extandable algorithm took: ~ %5s ms for input n = %10s\n",
 					(System.currentTimeMillis() - time), n);
 
@@ -90,11 +90,11 @@ public class Euler1 {
 
 	/*
 	 * This is inefficient, if time is the important factor then the solution from
-	 * {@link #solveExtandable()} should be extended. Without the first optimization
+	 * {@link #solveExtendable()} should be extended. Without the first optimization
 	 * step its trivial to understand and the optimization is easy to understand
 	 * anyway.
 	 */
-	public long solveExtandable(final int n, final List<Integer> divisors) {
+	public long solveExtendable(final int n, final List<Integer> divisors) {
 		// Remove any divisor that is overshadowed by a smaller divisor. If X > Y and X
 		// % Y == 0, then any multiple of X is obviously divisible by Y, so X can be
 		// removed from the list of divisors.

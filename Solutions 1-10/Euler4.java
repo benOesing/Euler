@@ -19,23 +19,27 @@ public class Euler4 {
 
     }
 
-    /*
-
-    */
+	/*
+	 * This solution simply creates any product of two 3-digit numbers going from biggest to smallest.
+	 * Could be improved to rather create palindroms and then test if they got a product of two 3-digit integers. 
+	 */
 	public String solveEfficient() {
 		int max = 0;
-		for (int i = 999; i * 999 > max && i > 100; i--) {
-			for (int j = 999; i * j > max && j > 100; j--) {
+		for (int i = 999; i * i > max && i >= 100; i--) { // Stop when the maximum product of i and max(j) = i is smaller than the biggest palindrome found.
+			for (int j = i; i * j > max && j >= 100; j--) { // Stop when the maximum product of i and j = i is smaller than the biggest palindrome found.
 				final int product = i * j;
 				if (isPalindrom(product)) {
-					max = Integer.max(max, product);
+					max = Integer.max(max, product); // Simple way to update a maximum
 					break;
 				}
 			}
 		}
 		return Integer.toString(max);
     }
-    
+	
+	/*
+	 * This function simply uses the build in functionality of the StringBuilder class.
+	 */
     private boolean isPalindrom(int n){
         StringBuilder sb = new StringBuilder(""+n);
         return ("" + n).equals(sb.reverse().toString());
