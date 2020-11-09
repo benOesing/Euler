@@ -27,7 +27,7 @@ public class Euler6 {
 		for (final Integer n : testCases) {
 			System.out.println("Test starting:\n");
 			long time = System.currentTimeMillis();
-			System.out.println(euler.solveEfficient(n));
+			euler.solveEfficient(n);
 			System.out.printf("Efficient algorithm took:  ~ %5s ms for input n = %10s\n",
 					(System.currentTimeMillis() - time), n);
 		}
