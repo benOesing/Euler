@@ -27,24 +27,16 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import de.oesing.all.OesingCountMap;
-import de.oesing.all.OesingLibArray;
-import de.oesing.all.OesingLibMain;
-import de.oesing.all.OesingLibMath;
-import de.oesing.all.OesingLibString;
-
 /**
- * @author Naix
+ * @author Benedikt[at]Oesing.de
  *
  */
 public class Euler {
 
-	static final OesingLibMain libMain = new OesingLibMain();
-
 	public static void main(final String[] args)
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		System.out.println("Problem number please:");
-		final String input = libMain.getInput();
+		final String input = Library.getInput();
 		final Euler e = new Euler();
 		final Method[] methods = e.getClass().getMethods();
 		if (input.equals("all") || input.equals("alle")) {
@@ -69,7 +61,11 @@ public class Euler {
 					continue;
 				}
 				final long time = System.currentTimeMillis();
-				System.out.format("%8s%32s%14s%n", m.getName(), m.invoke(e), System.currentTimeMillis() - time + " ms");
+				try{
+					System.out.format("%8s%32s%14s%n", m.getName(), m.invoke(e), System.currentTimeMillis() - time + " ms");
+				} catch(Exception ignore){
+					System.out.println(" Exception thrown, probably file not found.");
+				}
 			}
 		} else {
 			Method f = null;
@@ -83,7 +79,11 @@ public class Euler {
 				System.out.println("Problem not solved yet.");
 			} else {
 				final long time = System.currentTimeMillis();
+				try{
 				System.out.println(f.invoke(e));
+				} catch(Exception ignore){
+					System.out.println(" Exception thrown, probably file not found.");
+				}
 				System.out.println("Algorithm took: " + (System.currentTimeMillis() - time) + " ms");
 			}
 		}
@@ -114,7 +114,7 @@ public class Euler {
 	 * Find the sum of all the primes below two million.
 	 */
 	public String euler10() {
-		final List<Integer> list = libMain.listPrimes(2000000);
+		final List<Integer> list = Library.listPrimes(2000000);
 		long sum = 0;
 		for (final Integer i : list) {
 			sum += i;
@@ -203,10 +203,10 @@ public class Euler {
 	 */
 	public String euler12() {
 		int n = 0;
-		final List<Integer> primes = libMain.listPrimes(100000);
+		final List<Integer> primes = Library.listPrimes(100000);
 		for (int i = 1; i < Long.MAX_VALUE; i++) {
 			n += i;
-			final long[] factors = libMain.primeFactorization(n, primes);
+			final long[] factors = Library.primeFactorization(n, primes);
 			int divisor = 1;
 			long x = factors[0];
 			int count = 1;
@@ -333,7 +333,7 @@ public class Euler {
 	public String euler16() {
 		BigInteger x = new BigInteger("2");
 		x = x.pow(1000);
-		return Integer.toString(libMain.digitSum(x));
+		return Integer.toString(Library.digitSum(x));
 	}
 
 	/*
@@ -351,8 +351,8 @@ public class Euler {
 	 */
 	public String euler17() {
 		int letters = 0;
-		for (int i = 1; i <= 1000; i++) {
-			String s = OesingLibMath.numberToEnglish(i);
+		for (int i = 1; i <= 1000; i++) { 
+			String s = Library.numberToEnglish(i);
 			s = s.replaceAll("[ -]", "");
 			letters += s.length();
 		}
@@ -460,7 +460,7 @@ public class Euler {
 		for (long i = 2; i <= 100; i++) {
 			x = x.multiply(BigInteger.valueOf(i));
 		}
-		return Integer.toString(libMain.digitSum(x));
+		return Integer.toString(Library.digitSum(x));
 	}
 
 	/*
@@ -731,7 +731,7 @@ public class Euler {
 			for (int b = -1000; b < 1000; b++) {
 				int n = 0;
 				int count = 0;
-				while ((n * n + a * n + b) > 0 && libMain.isPrime(n * n + a * n + b)) {
+				while ((n * n + a * n + b) > 0 && Library.isPrime(n * n + a * n + b)) {
 					n++;
 					count++;
 				}
@@ -797,7 +797,7 @@ public class Euler {
 	 */
 	public String euler3() {
 		final long n = 600851475143l;
-		final long[] factors = libMain.primeFactorization(n);
+		final long[] factors = Library.primeFactorization(n);
 		return Long.toString(factors[factors.length - 1]);
 	}
 
@@ -878,7 +878,7 @@ public class Euler {
 			for (int j = i + 1; i * j < 10000; j++) {
 				final long x = i * j;
 				final String s = "" + i + j + x;
-				if (!s.contains("0") && libMain.isPandigital(s, false)) {
+				if (!s.contains("0") && Library.isPandigital(s, false)) {
 					products.add(x);
 				}
 			}
@@ -965,7 +965,7 @@ public class Euler {
 	public String euler35() {
 		final int limit = 1000000;
 		int count = 0;
-		final List<Integer> primes = libMain.listPrimes(limit);
+		final List<Integer> primes = Library.listPrimes(limit);
 		for (Integer prime : primes) {
 			boolean isCircular = true;
 			final int digits = prime.toString().length();
@@ -997,7 +997,7 @@ public class Euler {
 	public String euler36() {
 		long sum = 0;
 		for (int i = 1; i < 1000000; i += 2) {
-			if (libMain.isPalindrom(i) && libMain.isPalindrom(Integer.toString(i, 2))) {
+			if (Library.isPalindrom(i) && Library.isPalindrom(Integer.toString(i, 2))) {
 				sum += i;
 			}
 		}
@@ -1017,7 +1017,7 @@ public class Euler {
 	 */
 	public String euler37() {
 		long sum = 0;
-		final List<Integer> primes = libMain.listPrimes(1000000);
+		final List<Integer> primes = Library.listPrimes(1000000);
 		for (int i = primes.size() - 1; i > 3; i--) {
 			final int prime = primes.get(i);
 			boolean truncatable = true;
@@ -1062,7 +1062,7 @@ public class Euler {
 				} else if (s.length() < 9) {
 					s += Integer.toString(big * small);
 				} else if (s.length() == 9) {
-					if (libMain.isPandigital(s, false)) {
+					if (Library.isPandigital(s, false)) {
 						max = Long.max(max, Long.parseLong(s));
 					}
 					break;
@@ -1114,7 +1114,7 @@ public class Euler {
 		for (int i = 999; i * 999 > max && i > 100; i--) {
 			for (int j = 999; i * j > max && j > 100; j--) {
 				final long product = i * j;
-				if (libMain.isPalindrom(product)) {
+				if (Library.isPalindrom(product)) {
 					max = Long.max(max, product);
 					break;
 				}
@@ -1163,10 +1163,10 @@ public class Euler {
 		final int limit = 987654321;
 		String s = Integer.toString(limit);
 		while (s.length() > 0) {
-			final ArrayList<String> permutations = libMain.getPermutations(s);
+			final ArrayList<String> permutations = Library.getPermutations(s);
 			for (final String permutation : permutations) {
 				final int n = Integer.parseInt(permutation);
-				if (libMain.isPrime(n)) {
+				if (Library.isPrime(n)) {
 					return Integer.toString(n);
 				}
 			}
@@ -1247,7 +1247,7 @@ public class Euler {
 		long sum = 0;
 		for (final String s : lists[6]) {
 			long n = Long.parseLong(s);
-			final int insert = 45 - libMain.digitSum(n);
+			final int insert = 45 - Library.digitSum(n);
 			n += 1000000000l * insert;
 			sum += n;
 		}
@@ -1344,11 +1344,11 @@ public class Euler {
 			squares[i] = i * i;
 		}
 		for (int i = 3; i < limit; i += 2) {
-			if (!libMain.isPrime(i)) {
+			if (!Library.isPrime(i)) {
 				boolean found = false;
 				for (int j = 1; j < squares.length && squares[j] / 2 < i && !found; j++) {
 					final int x = i - 2 * squares[j];
-					if (libMain.isPrime(x)) {
+					if (Library.isPrime(x)) {
 						found = true;
 					}
 				}
@@ -1365,12 +1365,12 @@ public class Euler {
 	 * each. What is the first of these numbers?
 	 */
 	public String euler47() {
-		final List<Integer> primes = libMain.listPrimes(1000);
+		final List<Integer> primes = Library.listPrimes(1000);
 		final int target = 4;
 		int count = 0;
 		for (int n = 1;; n++) {
 			int digits = 1;
-			final long[] factors = libMain.primeFactorization(n, primes);
+			final long[] factors = Library.primeFactorization(n, primes);
 			long last = factors[0];
 			for (int i = 1; i < factors.length; i++) {
 				final long factor = factors[i];
@@ -1420,7 +1420,7 @@ public class Euler {
 	 * sequence?
 	 */
 	public String euler49() {
-		final List<Integer> primes = libMain.listPrimes(1000, 10000);
+		final List<Integer> primes = Library.listPrimes(1000, 10000);
 		for (int a = 0; a < primes.size(); a++) {
 			final int primeA = primes.get(a);
 			if (primeA == 1487) {
@@ -1469,12 +1469,12 @@ public class Euler {
 	 * Give your answer with nine digits after the decimal point (a.bcdefghij).
 	 */
 	public String euler493() {
-		final long denominator = OesingLibMath.binomialCoefficient(70, 20).longValueExact();
+		final long denominator = Library.binomialCoefficient(70, 20).longValueExact();
 		final long[] binomial = new long[10 + 1];
 		long sumOfColors = 0;
 		binomial[0] = 1;
 		for (int i = 1; i < binomial.length; i++) {
-			binomial[i] = OesingLibMath.binomialCoefficient(10, i).longValueExact();
+			binomial[i] = Library.binomialCoefficient(10, i).longValueExact();
 		}
 		for (int a = 0; a <= 10; a++) {
 			for (int b = 0; b <= 10; b++) {
@@ -1518,7 +1518,7 @@ public class Euler {
 		final ArrayList<Integer> factors = new ArrayList<>();
 		for (int i = 2; i <= 20; i++) { // ignore 1
 			int x = i;
-			if (libMain.isPrime(x)) {
+			if (Library.isPrime(x)) {
 				factors.add(x);
 			} else {
 				for (int j = 0; j < factors.size() && x != 1; j++) {
@@ -1553,7 +1553,7 @@ public class Euler {
 	public String euler50() {
 		final int limit = 1000000;
 		int maxValue = 0;
-		final List<Integer> primes = libMain.listPrimes(limit);
+		final List<Integer> primes = Library.listPrimes(limit);
 		for (int length = 1;; length++) {
 			boolean primeFound = false;
 			int sum = 0;
@@ -1563,14 +1563,14 @@ public class Euler {
 			if (sum >= limit) {
 				return Integer.toString(maxValue);
 			}
-			if (sum < limit && libMain.isPrime(sum)) {
+			if (sum < limit && Library.isPrime(sum)) {
 				maxValue = sum;
 				continue;
 			}
 			for (int i = 0; i + length < primes.size() && !primeFound; i++) {
 				sum -= primes.get(i);
 				sum += primes.get(i + length);
-				if (sum < limit && libMain.isPrime(sum)) {
+				if (sum < limit && Library.isPrime(sum)) {
 					maxValue = sum;
 					primeFound = true;
 					break;
@@ -1594,7 +1594,7 @@ public class Euler {
 		int counter = 0;
 		for (final String line : lines) {
 			final String[] cards = line.split(" ");
-			if (libMain.pokerDecideWinner(cards[0] + cards[1] + cards[2] + cards[3] + cards[4],
+			if (Library.pokerDecideWinner(cards[0] + cards[1] + cards[2] + cards[3] + cards[4],
 					cards[5] + cards[6] + cards[7] + cards[8] + cards[9], "") == 1) {
 				counter++;
 			}
@@ -1638,7 +1638,7 @@ public class Euler {
 	public String euler60() {
 		final int limit = 50000;
 		long smallestSum = Long.MAX_VALUE;
-		final List<Integer> primes = libMain.listPrimes(3, limit);
+		final List<Integer> primes = Library.listPrimes(3, limit);
 		final ArrayList<LinkedHashSet<Integer>> memory = new ArrayList<>(primes.size());
 		while (memory.size() < primes.size()) {
 			memory.add(null);
@@ -1650,8 +1650,8 @@ public class Euler {
 				final int prime = primes.get(x);
 				for (int i = x + 1; i < primes.size(); i++) {
 					final int y = primes.get(i);
-					if (libMain.isPrime((int) OesingLibMath.concatLongs(prime, y))
-							&& libMain.isPrime((int) OesingLibMath.concatLongs(y, prime))) {
+					if (Library.isPrime((int) Library.concatLongs(prime, y))
+							&& Library.isPrime((int) Library.concatLongs(y, prime))) {
 						insert.add(i);
 					}
 				}
@@ -1769,7 +1769,7 @@ public class Euler {
 				numbers.get(5).add(f);
 			}
 		}
-		final ArrayList<String> permutations = libMain.getPermutations("012345");
+		final ArrayList<String> permutations = Library.getPermutations("012345");
 		for (final String permutation : permutations) {
 			final ArrayList<Long> candidates = new ArrayList<>();
 			candidates.addAll(numbers.get(Integer.parseInt(permutation.substring(0, 1))));
@@ -1817,7 +1817,7 @@ public class Euler {
 	 */
 	public String euler62() {
 		int numberOfDigits = 1;
-		final OesingCountMap<List<Integer>> count = new OesingCountMap<>();
+		final CountMap<List<Integer>> count = new CountMap<>();
 		final HashMap<List<Integer>, Long> smallestCube = new HashMap<>();
 		for (long i = 0;; i++) {
 			long cube = i * i * i;
@@ -1853,7 +1853,7 @@ public class Euler {
 			for (int e = 1;; e++) {
 				BigInteger n = BigInteger.valueOf(i);
 				n = n.pow(e);
-				final int digits = libMain.countDigits(n);
+				final int digits = Library.countDigits(n);
 				if (e == digits) {
 					counter++;
 				} else if (digits < e || digits > e) {
@@ -1907,7 +1907,7 @@ public class Euler {
 			d = n;
 			n = d.multiply(BigInteger.valueOf(c)).add(temp);
 		}
-		return Integer.toString(libMain.digitSum(n));
+		return Integer.toString(Library.digitSum(n));
 	}
 
 	/*
@@ -2025,42 +2025,39 @@ public class Euler {
 					}
 					for (int c = 1; c <= 10; c++) {
 						final int line1 = a + b + c;
-						if (line1 != target || !OesingLibArray.noDuplicates(new Integer[] { a, b, c })) {
+						if (line1 != target || !Library.noDuplicates(new Integer[] { a, b, c })) {
 							continue;
 						}
 						for (int d = 1; d <= 10; d++) {
-							if (!OesingLibArray.noDuplicates(new Integer[] { a, b, c, d })) {
+							if (!Library.noDuplicates(new Integer[] { a, b, c, d })) {
 								continue;
 							}
 							for (int e = 1; e <= 10; e++) {
 								final int line2 = d + c + e;
-								if (line2 != target || !OesingLibArray.noDuplicates(new Integer[] { a, b, c, d, e })) {
+								if (line2 != target || !Library.noDuplicates(new Integer[] { a, b, c, d, e })) {
 									continue;
 								}
 								for (int f = 1; f <= 10; f++) {
-									if (!OesingLibArray.noDuplicates(new Integer[] { a, b, c, d, e, f })) {
+									if (!Library.noDuplicates(new Integer[] { a, b, c, d, e, f })) {
 										continue;
 									}
 									for (int g = 1; g <= 10; g++) {
 										final int line3 = f + e + g;
-										if (line3 != target || !OesingLibArray
-												.noDuplicates(new Integer[] { a, b, c, d, e, f, g })) {
+										if (line3 != target || !Library.noDuplicates(new Integer[] { a, b, c, d, e, f, g })) {
 											continue;
 										}
 										for (int h = 1; h <= 10; h++) {
-											if (!OesingLibArray
-													.noDuplicates(new Integer[] { a, b, c, d, e, f, g, h })) {
+											if (!Library.noDuplicates(new Integer[] { a, b, c, d, e, f, g, h })) {
 												continue;
 											}
 											for (int i = 1; i <= 10; i++) {
 												final int line4 = h + g + i;
-												if (line4 != target || OesingLibArray
-														.noDuplicates(new Integer[] { a, b, c, d, e, f, g, h, i })) {
+												if (line4 != target || Library.noDuplicates(new Integer[] { a, b, c, d, e, f, g, h, i })) {
 													continue;
 												}
 												for (int j = 1; j <= 10; j++) {
 													final int line5 = j + i + b;
-													if (line5 == target && OesingLibArray.noDuplicates(
+													if (line5 == target && Library.noDuplicates(
 															new Integer[] { a, b, c, d, e, f, g, h, i, j })) {
 														if (a < d && a < f && a < h && j > a) {
 															final String s = "" + a + b + c + d + c + e + f + e + g + h
@@ -2093,7 +2090,7 @@ public class Euler {
 	public String euler69() {
 		double max = 0;
 		int result = 0;
-		final long[] phi = libMain.listPhi(1000000);
+		final long[] phi = Library.listPhi(1000000);
 		for (int n = 2; n < phi.length; n++) {
 			final double x = (1.0 * n) / (1.0 * phi[n]);
 			if (x > max) {
@@ -2113,7 +2110,7 @@ public class Euler {
 	public String euler7() {
 		int count = 0;
 		for (int i = 2;; i++) {
-			if (libMain.isPrime(i)) {
+			if (Library.isPrime(i)) {
 				count++;
 				if (count == 10001) {
 					return Integer.toString(i);
@@ -2138,15 +2135,15 @@ public class Euler {
 	public String euler70() {
 		int result = 0;
 		double min = Double.MAX_VALUE;
-		final List<Integer> primes = libMain.listPrimes(2000, 5000);
+		final List<Integer> primes = Library.listPrimes(2000, 5000);
 		for (int i = 0; i < primes.size() && primes.get(i) < Math.sqrt(10000000); i++) {
 			for (int j = i + 1; j < primes.size(); j++) {
 				final int n = primes.get(i) * primes.get(j);
 				if (n > 10000000) {
 					break;
 				}
-				if (libMain.isPermutation(n, libMain.phi(n))) {
-					final double ratio = (1.0 * n) / (1.0 * libMain.phi(n));
+				if (Library.isPermutation(n, Library.phi(n))) {
+					final double ratio = (1.0 * n) / (1.0 * Library.phi(n));
 					if (ratio < min) {
 						min = ratio;
 						result = n;
@@ -2214,7 +2211,7 @@ public class Euler {
 	 * for d ≤ 1,000,000?
 	 */
 	public String euler72() {
-		final long[] phi = libMain.listPhi(1000000);
+		final long[] phi = Library.listPhi(1000000);
 		long sum = 0;
 		for (final Long l : phi) {
 			sum += l;
@@ -2244,7 +2241,7 @@ public class Euler {
 		for (int d = 2; d <= 12000; d++) {
 			for (int n = 0; n < d; n++) {
 				final double fraction = (1.0 * n) / (1.0 * d);
-				if (lower < fraction && fraction < upper && libMain.ggT(d, n) == 1) {
+				if (lower < fraction && fraction < upper && Library.ggT(d, n) == 1) {
 					counter++;
 				} else if (fraction > upper) {
 					break;
@@ -2341,7 +2338,7 @@ public class Euler {
 		final int mlimit = (int) Math.sqrt(limit / 2);
 		for (long m = 2; m < mlimit; m++) {
 			for (long n = 1; n < m; n++) {
-				if (((n + m) % 2) == 1 && libMain.ggT(n, m) == 1) {
+				if (((n + m) % 2) == 1 && Library.ggT(n, m) == 1) {
 					final long a = m * m + n * n;
 					final long b = m * m - n * n;
 					final long c = 2 * m * n;
@@ -2383,7 +2380,7 @@ public class Euler {
 	 */
 	public String euler77() {
 		int target = 2;
-		final List<Integer> primes = libMain.listPrimes(1000);
+		final List<Integer> primes = Library.listPrimes(1000);
 		while (true) {
 			final long[] ways = new long[target + 1];
 			ways[0] = 1;
@@ -2528,7 +2525,7 @@ public class Euler {
 	 * greatest product. What is the value of this product?
 	 */
 	public String euler8() throws IOException {
-		final String number = Files.readAllLines(Paths.get("./8.txt")).get(0);
+		final String number = Files.readAllLines(Paths.get("/8.txt")).get(0);
 		long max = 0;
 		long product = 1;
 		long products = 0;
@@ -2573,9 +2570,9 @@ public class Euler {
 				continue;
 			}
 			BigDecimal d = new BigDecimal(i);
-			d = libMain.squareRoot(d, 103);
+			d = Library.squareRoot(d, 103);
 			final String s = d.toPlainString().substring(0, 101).replaceAll("\\.", "");
-			sum += libMain.digitSum(s);
+			sum += Library.digitSum(s);
 		}
 		return Integer.toString(sum);
 	}
@@ -2782,7 +2779,7 @@ public class Euler {
 	 * six-digit modal string.
 	 */
 	public String euler84() {
-		final OesingCountMap<Integer> visited = new OesingCountMap<>();
+		final CountMap<Integer> visited = new CountMap<>();
 		int position = 0;
 		int doublesRolled = 0;
 		final ArrayList<Integer> community = new ArrayList<>();
@@ -2968,7 +2965,7 @@ public class Euler {
 	public String euler87() {
 		final int limit = 50000000;
 		final int limitSqr = (int) Math.ceil(Math.sqrt(limit));
-		List<Integer> primes = libMain.listPrimes(limitSqr);
+		List<Integer> primes = Library.listPrimes(limitSqr);
 		final List<Integer> squares = new ArrayList<>();
 		final List<Integer> cubes = new ArrayList<>();
 		final List<Integer> tesseracts = new ArrayList<>();
@@ -3030,7 +3027,7 @@ public class Euler {
 	public String euler88() {
 		long sum = 0;
 		final int limit = 12000;
-		final List<Integer> primes = libMain.listPrimes(limit);
+		final List<Integer> primes = Library.listPrimes(limit);
 		final HashSet<Integer> seen = new HashSet<>();
 		for (int k = 2; k <= limit; k++) {
 			boolean done = false;
@@ -3039,7 +3036,7 @@ public class Euler {
 				if (Collections.binarySearch(primes, n) >= 0) {
 					continue;
 				}
-				final List<List<Long>> possibleFactors = libMain.listPossibleMultiplicants(n);
+				final List<List<Long>> possibleFactors = Library.listPossibleMultiplicants(n);
 				for (final List<Long> factors : possibleFactors) {
 					int sumFac = k - factors.size(); // #ones added as factors
 					for (final Long factor : factors) {
@@ -3091,16 +3088,16 @@ public class Euler {
 			int n = 0;
 			for (int i = 0; i < numeral.length(); i++) {
 				String s = numeral.substring(i, Math.min(i + 2, numeral.length()));
-				int pos = OesingLibArray.linearSearch(order, s);
+				int pos = Library.linearSearch(order, s);
 				if (pos < 0) {
 					s = s.substring(0, 1);
 				} else {
 					i++;
 				}
-				pos = OesingLibArray.linearSearch(order, s);
+				pos = Library.linearSearch(order, s);
 				n += value[pos];
 			}
-			final String optimal = OesingLibString.asRomanNumber(n);
+			final String optimal = Library.asRomanNumber(n);
 			saved += numeral.length() - optimal.length();
 		}
 		return Long.toString(saved);
@@ -3338,7 +3335,7 @@ public class Euler {
 	//				for (int c = b + 1; c < 10; c++) {
 	//					for (int d = c + 1; d < 10; d++) {
 	//						final Set<Integer> found = new TreeSet<>();
-	//						final ArrayList<String> permutations = libMain.getPermutations("" + a + b + c + d);
+	//						final ArrayList<String> permutations = Library.getPermutations("" + a + b + c + d);
 	//						for (final String permutation : permutations) {
 	//							for (final String combination : possibleCombinations) {
 	//								for (int op1 = 0; op1 < 4; op1++) {
@@ -3352,7 +3349,7 @@ public class Euler {
 	//											term = term.replace('.', operands[op1]);
 	//											term = term.replace(',', operands[op2]);
 	//											term = term.replace(';', operands[op3]);
-	//											final double result = OesingLibMath.evalTerm(term);
+	//											final double result = Library.evalTerm(term);
 	//											if (result % 1 == 0 && !found.contains((int) result) && result >= 1) {
 	//												found.add((int) result);
 	//											}
@@ -3431,13 +3428,13 @@ public class Euler {
 	 */
 	public String euler95() {
 		final int limit = 1000000;
-		final List<Integer> primes = libMain.listPrimes((int) Math.sqrt(limit / 2));
+		final List<Integer> primes = Library.listPrimes((int) Math.sqrt(limit / 2));
 		int longestChain = 0;
 		int bestValue = 0;
 		final int[] sumOfDivisors = new int[limit + 1];
 		for (int i = 4; i < sumOfDivisors.length; i++) {
 			if (sumOfDivisors[i] == 0) {
-				final List<Integer> divisors = libMain.getDivisors(i);
+				final List<Integer> divisors = Library.getDivisors(i);
 				int sum = 1;
 				for (int j = 1; j < divisors.size() - 1; j++) {
 					sum += divisors.get(j);
@@ -3509,7 +3506,7 @@ public class Euler {
 			if (!line.contains("Grid")) {
 				board += line;
 				if (board.length() == 81) {
-					final int[][] solution = libMain.solveSudoku(board);
+					final int[][] solution = Library.solveSudoku(board);
 					result += solution[0][0] * 100 + solution[0][1] * 10 + solution[0][2];
 					board = "";
 				}
@@ -3534,82 +3531,6 @@ public class Euler {
 		return BigInteger.valueOf(28433)
 				.multiply(BigInteger.valueOf(2).modPow(BigInteger.valueOf(7830457), BigInteger.valueOf(digits)))
 				.add(BigInteger.ONE).mod(BigInteger.valueOf(digits)).toString();
-	}
-
-	/*
-	 * By replacing each of the letters in the word CARE with 1, 2, 9, and 6
-	 * respectively, we form a square number: 1296 = 36^2. What is remarkable is
-	 * that, by using the same digital substitutions, the anagram, RACE, also forms
-	 * a square number: 9216 = 96^2. We shall call CARE (and RACE) a square anagram
-	 * word pair and specify further that leading zeroes are not permitted, neither
-	 * may a different letter have the same digital value as another letter.
-	 *
-	 * Using words.txt (right click and 'Save Link/Target As...'), a 16K text file
-	 * containing nearly two-thousand common English words, find all the square
-	 * anagram word pairs (a palindromic word is NOT considered to be an anagram of
-	 * itself).
-	 *
-	 * What is the largest square number formed by any member of such a pair?
-	 *
-	 * NOTE: All anagrams formed must be contained in the given text file.
-	 */
-	public String euler98() throws IOException {
-		long result = 0;
-		final List<String> lines = Files.readAllLines(Paths.get("98.txt"));
-		final String[] words = lines.get(0).split(",");
-		for (int i = 0; i < words.length; i++) {
-			words[i] = words[i].replaceAll("\"", "");
-		}
-		final ArrayList<Long> squares = new ArrayList<>();
-		final int maxWordLength = 8;
-		for (long i = 1; i < Math.sqrt(Math.pow(10, maxWordLength) + 1); i++) {
-			squares.add(i * i);
-
-		}
-		for (int i = 0; i < words.length; i++) {
-			final String word1 = words[i];
-			for (int j = i + 1; j < words.length; j++) {
-				final String word2 = words[j];
-				if (!word1.equals(word2) && libMain.isAnagram(word1, word2)) {
-					for (Long square : squares) {
-						boolean possibleMatch = true;
-						if (word1.length() < square.toString().length()) {
-							break;
-						}
-						if (word1.length() > square.toString().length()) {
-							continue;
-						}
-						final HashMap<Character, Long> map = new HashMap<>();
-						for (int k = word1.length() - 1; k >= 0; k--) {
-							final char c = word1.charAt(k);
-							if (map.containsKey(c) && map.get(c) != square % 10 || map.containsValue(square % 10)) {
-								possibleMatch = false;
-								break;
-							} else {
-								map.put(c, square % 10);
-							}
-							square = square / 10;
-						}
-						if (possibleMatch) {
-							long valueWord2 = 0;
-							if (map.get(word2.charAt(0)) == 0) {
-								possibleMatch = false;
-							} else {
-								for (int k = 0; k < word2.length(); k++) {
-									valueWord2 = valueWord2 * 10 + map.get(word2.charAt(k));
-								}
-							}
-							if (possibleMatch) {
-								if (Collections.binarySearch(squares, valueWord2) >= 0) {
-									result = Math.max(Math.max(result, square), valueWord2);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return Long.toString(result);
 	}
 
 	/**
