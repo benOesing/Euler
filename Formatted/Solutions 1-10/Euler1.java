@@ -63,7 +63,7 @@ public class Euler1 {
 
 	/*
 	 * This is the most efficient solution possible. It uses the gaussian summation
-	 * formula (sum i=1 to n = (n * n+1)/2) to calculate all the multiples in O(n).
+	 * formula (sum i=1 to n = (n * n+1)/2) to calculate all the multiples in O(1).
 	 * To do that it uses the fact that the sum of all multiples of an integer X < n
 	 * can be rewritten as the sum from 1 to n/X times X. This algorithm doesnt like
 	 * to be extended due to the fact, that multiples have to be counted exactly
